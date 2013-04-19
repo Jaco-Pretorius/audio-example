@@ -12,7 +12,9 @@
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *recordButton;
 @property BOOL isRecording;
+@property (strong, nonatomic) AVAudioPlayer *player;
 @property (strong, nonatomic) AVAudioRecorder *recorder;
+@property NSURL *currentRecording;
 @end
 
 @implementation ViewController
@@ -33,6 +35,8 @@
 
 - (IBAction)playRecording
 {
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:self.currentRecording error:nil];
+    [self.player play];
 }
 
 - (void)startRecording
@@ -56,6 +60,7 @@
 - (void)stopRecording
 {
     [self.recorder stop];
+    self.currentRecording = self.recorder.url;
     self.isRecording = NO;
     [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
 }
